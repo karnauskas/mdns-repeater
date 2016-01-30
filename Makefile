@@ -47,3 +47,7 @@ clean:
 	-$(RM) _hgversion
 	-$(RM) mdns-repeater
 	-$(RM) mdns-repeater-*.zip
+
+.PHONY: test
+test: mdns-repeater
+	sudo ./mdns-repeater -f wlp3s0 docker0

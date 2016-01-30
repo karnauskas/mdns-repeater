@@ -1,6 +1,7 @@
 /*
  * mdns-repeater.c - mDNS repeater daemon
  * Copyright (C) 2011 Darell Tan
+ *               2016 Marius Karnauskas
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +35,8 @@
 #include <net/if.h>
 
 #define PACKAGE "mdns-repeater"
-#define MDNS_ADDR "224.0.0.251"
+#define MDNS_ADDR_v4 "224.0.0.251"
+#define MDNS_ADDR_v6 "ff02::fb"
 #define MDNS_PORT 5353
 
 #define PIDFILE "/var/run/" PACKAGE ".pid"
@@ -174,7 +176,7 @@ static int create_send_sock(int recv_sockfd, const char *ifname, struct if_sock 
 	struct ip_mreq mreq;
 	memset(&mreq, 0, sizeof(struct ip_mreq));
 	mreq.imr_interface.s_addr = if_addr->s_addr;
-	mreq.imr_multiaddr.s_addr = inet_addr(MDNS_ADDR);
+	mreq.imr_multiaddr.s_addr = inet_addr(MDNS_ADDR_v4);
 	if ((r = setsockopt(recv_sockfd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq))) < 0) {
 		log_message(LOG_ERR, "recv setsockopt(IP_ADD_MEMBERSHIP): %m");
 		return r;
@@ -203,7 +205,7 @@ static ssize_t send_packet(int fd, const void *data, size_t len) {
 		memset(&toaddr, 0, sizeof(struct sockaddr_in));
 		toaddr.sin_family = AF_INET;
 		toaddr.sin_port = htons(MDNS_PORT);
-		toaddr.sin_addr.s_addr = inet_addr(MDNS_ADDR);
+		toaddr.sin_addr.s_addr = inet_addr(MDNS_ADDR_v4);
 	}
 
 	return sendto(fd, data, len, 0, (struct sockaddr *) &toaddr, sizeof(struct sockaddr_in));
