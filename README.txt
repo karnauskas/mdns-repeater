@@ -1,8 +1,8 @@
 mdns-repeater
 ==============
 mdns-repeater is a Multicast DNS repeater for Linux. Multicast DNS uses the 
-224.0.0.51 address, which is "administratively scoped" and does not 
-leave the subnet.
+224.0.0.51 for IPv4 and ff02::fb for IPv6 address, which is "administratively 
+scoped" and does not leave the subnet.
 
 This program re-broadcast mDNS packets from one interface to other interfaces.
 It was written primarily to be run on my Linksys WRT54G which runs dd-wrt,
@@ -32,6 +32,7 @@ long as you abide by the software license.
 LICENSE
 --------
 Copyright (C) 2011 Darell Tan
+              2016 Marius Karnauskas
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

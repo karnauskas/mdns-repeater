@@ -289,7 +289,8 @@ static void daemonize() {
 
 static void show_help(const char *progname) {
 	fprintf(stderr, "mDNS repeater (version " HGVERSION ")\n");
-	fprintf(stderr, "Copyright (C) 2011 Darell Tan\n\n");
+	fprintf(stderr, "Copyright (C) 2011 Darell Tan\n");
+    fprintf(stderr, "              2016 Marius Karnauskas\n\n");
 
 	fprintf(stderr, "usage: %s [ -f ] <ifdev> ...\n", progname);
 	fprintf(stderr, "\n"
