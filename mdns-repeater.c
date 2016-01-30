@@ -79,7 +79,7 @@ void log_message(int loglevel, char *fmt_str, ...) {
 }
 
 static int create_recv_sock() {
-	int sd = socket(AF_INET, SOCK_DGRAM, 0);
+	int sd = socket(AF_INET6, SOCK_DGRAM, 0);
 	if (sd < 0) {
 		log_message(LOG_ERR, "recv socket(): %m");
 		return sd;
@@ -94,14 +94,18 @@ static int create_recv_sock() {
 	}
 
 	/* bind to an address */
+	/*
 	struct sockaddr_in serveraddr;
 	memset(&serveraddr, 0, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(MDNS_PORT);
-	serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);	/* receive multicast */
+	serveraddr.sin_addr.s_addr = htonl(INADDR_ANY); // receive multicast
 	if ((r = bind(sd, (struct sockaddr *)&serveraddr, sizeof(serveraddr))) < 0) {
 		log_message(LOG_ERR, "recv bind(): %m");
 	}
+	*/
+	struct addrinfo hints, *res;
+	memset(&hints, 0, sizeof(hints));
 
 	// enable loopback in case someone else needs the data
 	if ((r = setsockopt(sd, IPPROTO_IP, IP_MULTICAST_LOOP, &on, sizeof(on))) < 0) {
@@ -290,7 +294,7 @@ static void daemonize() {
 }
 
 static void show_help(const char *progname) {
-	fprintf(stderr, "mDNS repeater (version " HGVERSION ")\n");
+	fprintf(stderr, "mDNS repeater (version " VERSION ")\n");
 	fprintf(stderr, "Copyright (C) 2011 Darell Tan\n");
     fprintf(stderr, "              2016 Marius Karnauskas\n\n");
 
